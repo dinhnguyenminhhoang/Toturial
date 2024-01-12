@@ -31,6 +31,10 @@ const shopSchema = new Schema(
             default: "inactive",
         },
         verify: {
+            type: Schema.Types.Boolean,
+            default: false,
+        },
+        roles: {
             type: Array,
             default: [],
         },
