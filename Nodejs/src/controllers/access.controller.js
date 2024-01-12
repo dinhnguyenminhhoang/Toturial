@@ -1,4 +1,7 @@
 "use strict";
+
+const AccessService = require("../services/access.services");
+
 class AccessController {
     singUp = async (req, res, next) => {
         try {
@@ -7,10 +10,7 @@ class AccessController {
             200->oke
             201->CREATE
             */
-            return res.status(201).json({
-                code: "2001",
-                metadata: { userId: 1 },
-            });
+            return res.status(201).json(await AccessService.singUp(req.body));
         } catch (error) {
             next(error);
         }

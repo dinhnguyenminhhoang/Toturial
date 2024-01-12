@@ -3,6 +3,8 @@
 const shopModel = require("../models/shop.model");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
+const KeyTokenService = require("./keyToken.services");
+const { createTokenPair } = require("../auth/authUtils");
 const RolesShop = {
     SHOP: "SHOP",
     WRITER: "WRITER",
@@ -37,7 +39,38 @@ class AccessService {
                 );
                 //rsa : thuật toán bất đôi dứng
                 console.log({ privateKey, publicKey });
+                const publicKeyString = await KeyTokenService.createKeyToken({
+                    userId: newSHop._id,
+                    publickey: publicKey,
+                });
+                if (!publicKeyString) {
+                    return {
+                        code: "xxxx",
+                        message: "publicKeyStrinf error",
+                    };
+                }
+                //create token pair
+                const tokens = await createTokenPair(
+                    {
+                        userId: newSHop._id,
+                        email,
+                    },
+                    publicKey,
+                    privateKey
+                );
+                console.log(`created token successfully::`, tokens);
+                return {
+                    code: 201,
+                    metadata: {
+                        shop: newSHop,
+                        tokens,
+                    },
+                };
             }
+            return {
+                code: 200,
+                metadata: null,
+            };
         } catch (error) {
             return {
                 code: "xxx",

@@ -26,4 +26,4 @@ const keyTokenSchema = new Schema(
 );
 
 //Export the model
-module.exports = mongoose.model(DOCUMENT_NAME, keyTokenSchema);
+module.exports = model(DOCUMENT_NAME, keyTokenSchema);
