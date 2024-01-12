@@ -8,8 +8,11 @@ const app = express();
 app.use(morgan("dev"));
 app.use(helmet());
 app.use(compression());
-// init db
 
+// init db
+require("./dbs/init.mongodb");
+const { checkOverLoad } = require("./helpers/check.connect");
+checkOverLoad();
 //init router
 app.get("/", (req, res, next) => {
     return res.status(200).json({
