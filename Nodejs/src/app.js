@@ -15,11 +15,6 @@ require("./dbs/init.mongodb");
 // const { checkOverLoad } = require("./helpers/check.connect");
 // checkOverLoad();
 //init router
-app.get("/", (req, res, next) => {
-    return res.status(200).json({
-        message: "wellcome nodeJs",
-    });
-});
-
+app.use("/", require("./routers"));
 //handling errors
 module.exports = app;
