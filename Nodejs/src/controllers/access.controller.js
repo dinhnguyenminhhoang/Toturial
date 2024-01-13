@@ -1,15 +1,17 @@
 "use strict";
 
 const AccessService = require("../services/access.services");
+const { CREATED } = require("../core/success.response");
 
 class AccessController {
     singUp = async (req, res, next) => {
-        console.log(`[p]:::singUp`, req.body);
-        /*
-            200->oke
-            201->CREATE
-            */
-        return res.status(201).json(await AccessService.singUp(req.body));
+        new CREATED({
+            message: "Register OK!",
+            metadata: await AccessService.singUp(req.body),
+            options: {
+                limit: 10,
+            },
+        }).send(res);
     };
 }
 module.exports = new AccessController();
