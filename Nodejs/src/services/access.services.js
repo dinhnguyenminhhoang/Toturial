@@ -35,13 +35,15 @@ class AccessService {
                     "rsa",
                     {
                         modulusLength: 4096,
+                        publicKeyEncoding: { type: "pkcs1", format: "pem" },
+                        privateKeyEncoding: { type: "pkcs1", format: "pem" },
                     }
                 );
                 //rsa : thuật toán bất đôi dứng
                 console.log({ privateKey, publicKey });
                 const publicKeyString = await KeyTokenService.createKeyToken({
                     userId: newSHop._id,
-                    publickey: publicKey,
+                    publicKey: publicKey,
                 });
                 if (!publicKeyString) {
                     return {
@@ -49,13 +51,15 @@ class AccessService {
                         message: "publicKeyStrinf error",
                     };
                 }
+                const publicKeyObject = crypto.createPublicKey(publicKeyString);
+                console.log(`publicKeyObject::`, publicKeyObject);
                 //create token pair
                 const tokens = await createTokenPair(
                     {
                         userId: newSHop._id,
                         email,
                     },
-                    publicKey,
+                    publicKeyString,
                     privateKey
                 );
                 console.log(`created token successfully::`, tokens);
