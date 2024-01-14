@@ -1,12 +1,5 @@
 "use strict";
-const STATUSCODE = {
-    FORBIDEN: 403,
-    CONFLICT: 409,
-};
-const REASONSTATUSCODE = {
-    FORBIDEN: "bad request error",
-    CONFLICT: "Conflict error",
-};
+const { StatusCodes, ReasonPhrases } = require("../utils/httpStatusCode");
 class ErrorResponse extends Error {
     //kết thứa message và status của ER trong nodeJs
     constructor(message, status) {
@@ -17,18 +10,26 @@ class ErrorResponse extends Error {
 }
 class conflictRequestError extends ErrorResponse {
     constructor(
-        message = REASONSTATUSCODE.CONFLICT,
-        statusCode = STATUSCODE.FORBIDEN
+        message = ReasonPhrases.CONFLICT,
+        statusCode = StatusCodes.FORBIDDEN
     ) {
         super(message, statusCode);
     }
 }
 class badRequestError extends ErrorResponse {
     constructor(
-        message = REASONSTATUSCODE.CONFLICT,
-        statusCode = STATUSCODE.FORBIDEN
+        message = ReasonPhrases.CONFLICT,
+        statusCode = StatusCodes.FORBIDDEN
     ) {
         super(message, statusCode);
     }
 }
-module.exports = { conflictRequestError, badRequestError };
+class AuthFailureError extends ErrorResponse {
+    constructor(
+        message = "Authentication failed",
+        statusCode = StatusCodes.UNAUTHORIZED
+    ) {
+        super(message, statusCode);
+    }
+}
+module.exports = { conflictRequestError, badRequestError, AuthFailureError };

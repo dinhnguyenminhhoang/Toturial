@@ -3,10 +3,11 @@
 const shopModel = require("../models/shop.model");
 const crypto = require("crypto");
 const bcrypt = require("bcrypt");
-const KeyTokenService = require("./keyToken.services");
+const KeyTokenService = require("./keyToken.service");
 const { createTokenPair } = require("../auth/authUtils");
 const { getInfoData } = require("../utils");
-const { badRequestError } = require("../core/error.response");
+const { badRequestError, AuthFailureError } = require("../core/error.response");
+const { findByEmail } = require("./shop.service");
 const RolesShop = {
     SHOP: "SHOP",
     WRITER: "WRITER",
@@ -14,6 +15,47 @@ const RolesShop = {
     ADMIN: "ADMIN",
 };
 class AccessService {
+    //login
+    static login = async ({ email, password, refreshToken = null }) => {
+        //step 1
+        const foundShop = await findByEmail({
+            email,
+        });
+
+        if (!foundShop) {
+            throw new badRequestError("shop not registered");
+        }
+        const { _id: userId } = foundShop;
+        //step 2
+        const match = bcrypt.compare(password, foundShop.password);
+        if (!match) throw new AuthFailureError("Authentication Error");
+        //step 3
+        const publicKey = crypto.randomBytes(64).toString(`hex`);
+        const privateKey = crypto.randomBytes(64).toString(`hex`);
+        //step 4
+        const tokens = await createTokenPair(
+            {
+                userId: userId,
+                email: email,
+            },
+            publicKey,
+            privateKey
+        );
+        await KeyTokenService.createKeyToken({
+            refreshToken: tokens.refreshToken,
+            privateKey,
+            publicKey,
+            userId: userId,
+        });
+        return {
+            shop: getInfoData({
+                fill: ["_id", "name", "email"],
+                object: foundShop,
+            }),
+            tokens,
+        };
+    };
+    //end login
     static singUp = async ({ name, email, password }) => {
         //step 1 : check email exists
         const hodelShop = await shopModel.findOne({ email }).lean();

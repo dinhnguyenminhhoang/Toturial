@@ -20,10 +20,14 @@ const keyTokenSchema = new Schema(
             type: String,
             required: true,
         },
-        refreshToken: {
+        refreshTokenUsed: {
             type: Array,
             default: [],
             // nhiệm vụ để tick hacker sử dụng trái phép các token này
+        },
+        refreshToken: {
+            type: String,
+            required: true,
         },
     },
     { timestamps: true, collection: COLLECTION_NAME }
