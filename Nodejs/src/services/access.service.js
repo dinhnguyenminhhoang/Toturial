@@ -15,47 +15,6 @@ const RolesShop = {
     ADMIN: "ADMIN",
 };
 class AccessService {
-    //login
-    static login = async ({ email, password, refreshToken = null }) => {
-        //step 1
-        const foundShop = await findByEmail({
-            email,
-        });
-
-        if (!foundShop) {
-            throw new badRequestError("shop not registered");
-        }
-        const { _id: userId } = foundShop;
-        //step 2
-        const match = bcrypt.compare(password, foundShop.password);
-        if (!match) throw new AuthFailureError("Authentication Error");
-        //step 3
-        const publicKey = crypto.randomBytes(64).toString(`hex`);
-        const privateKey = crypto.randomBytes(64).toString(`hex`);
-        //step 4
-        const tokens = await createTokenPair(
-            {
-                userId: userId,
-                email: email,
-            },
-            publicKey,
-            privateKey
-        );
-        await KeyTokenService.createKeyToken({
-            refreshToken: tokens.refreshToken,
-            privateKey,
-            publicKey,
-            userId: userId,
-        });
-        return {
-            shop: getInfoData({
-                fill: ["_id", "name", "email"],
-                object: foundShop,
-            }),
-            tokens,
-        };
-    };
-    //end login
     static singUp = async ({ name, email, password }) => {
         //step 1 : check email exists
         const hodelShop = await shopModel.findOne({ email }).lean();
@@ -123,5 +82,52 @@ class AccessService {
             metadata: null,
         };
     };
+    //login
+    static login = async ({ email, password, refreshToken = null }) => {
+        //step 1
+        const foundShop = await findByEmail({
+            email,
+        });
+
+        if (!foundShop) {
+            throw new badRequestError("shop not registered");
+        }
+        const { _id: userId } = foundShop;
+        //step 2
+        const match = bcrypt.compare(password, foundShop.password);
+        if (!match) throw new AuthFailureError("Authentication Error");
+        //step 3
+        const publicKey = crypto.randomBytes(64).toString(`hex`);
+        const privateKey = crypto.randomBytes(64).toString(`hex`);
+        //step 4
+        const tokens = await createTokenPair(
+            {
+                userId: userId,
+                email: email,
+            },
+            publicKey,
+            privateKey
+        );
+        await KeyTokenService.createKeyToken({
+            refreshToken: tokens.refreshToken,
+            privateKey,
+            publicKey,
+            userId: userId,
+        });
+        return {
+            shop: getInfoData({
+                fill: ["_id", "name", "email"],
+                object: foundShop,
+            }),
+            tokens,
+        };
+    };
+    //end login
+    // logout
+    static Logout = async (keyStore) => {
+        const delKey = await KeyTokenService.removeKeyById(keyStore._id);
+        return delKey;
+    };
+    //end logout
 }
 module.exports = AccessService;
