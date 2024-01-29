@@ -2,14 +2,30 @@ import { useFormik } from "formik";
 import React from "react";
 
 function FormData() {
+    const validate = (values) => {
+        let errors = {};
+        if (!values.name?.trim()) {
+            errors.name = "Required";
+        }
+        if (values.email?.trim()) {
+            errors.email = "Required";
+        }
+        if (values.channel?.trim()) {
+            errors.channel = "Required";
+        }
+        return errors;
+    };
+    const initialValues = {
+        name: "",
+        email: "",
+        channel: "",
+    };
     const formik = useFormik({
-        initialValues: {
-            name: "",
-            email: "",
-            channel: "",
-        },
         onSubmit: (values) => handleSubmit(values),
+        initialValues,
+        validate,
     });
+
     const handleSubmit = (values) => {
         console.log("values", values);
     };
