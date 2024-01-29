@@ -1,8 +1,15 @@
 import { useFormik } from "formik";
 import React from "react";
 
-function FormData({}) {
-    const formik = useFormik({});
+function FormData() {
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+            email: "",
+            channel: "",
+        },
+    });
+    console.log(formik.values);
     return (
         <div className="flex h-screen justify-center items-center ">
             <form className="flex flex-col gap-4 p-6 border-2 border-gray-900">
@@ -12,6 +19,8 @@ function FormData({}) {
                     type="text"
                     id="name"
                     name="name"
+                    onChange={formik.handleChange}
+                    value={formik.values.name}
                 />
 
                 <label htmlFor="email">Email</label>
@@ -20,14 +29,18 @@ function FormData({}) {
                     type="email"
                     id="email"
                     name="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
                 />
 
-                <label htmlFor="channel">Name</label>
+                <label htmlFor="channel">channel</label>
                 <input
                     className="border border-gray-700 rounded-md px-4 py-2"
                     type="text"
                     id="channel"
                     name="channel"
+                    onChange={formik.handleChange}
+                    value={formik.values.channel}
                 />
                 <button
                     type="submit"
