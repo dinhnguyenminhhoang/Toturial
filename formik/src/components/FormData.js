@@ -1,6 +1,10 @@
 import { useFormik } from "formik";
 import React from "react";
-
+const initialValues = {
+    name: "",
+    email: "",
+    channel: "",
+};
 function FormData() {
     const validate = (values) => {
         let errors = {};
@@ -15,24 +19,20 @@ function FormData() {
         }
         return errors;
     };
-    const initialValues = {
-        name: "",
-        email: "",
-        channel: "",
+
+    const handleSubmit = (values) => {
+        console.log(values);
     };
     const formik = useFormik({
-        onSubmit: (values) => handleSubmit(values),
         initialValues,
+        onSubmit: handleSubmit,
         validate,
     });
 
-    const handleSubmit = (values) => {
-        console.log("values", values);
-    };
     return (
         <div className="flex h-screen justify-center items-center ">
             <form
-                onSubmit={formik.handleSubmit}
+                onSubmit={formik.onSubmit}
                 className="flex flex-col gap-4 p-6 border-2 border-gray-900"
             >
                 <label htmlFor="name">Name</label>
