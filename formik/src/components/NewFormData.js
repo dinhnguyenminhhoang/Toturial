@@ -1,4 +1,4 @@
-import { Field, Form, Formik, useFormik } from "formik";
+import { ErrorMessage, Field, Form, Formik, useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 
@@ -34,9 +34,7 @@ function NewFormData() {
                         id="name"
                         name="name"
                     />
-                    {formik.touched.name && formik.errors.name && (
-                        <div className="text-red-500">{formik.errors.name}</div>
-                    )}
+                    <ErrorMessage name="name" />
                 </div>
 
                 <div>
@@ -47,11 +45,7 @@ function NewFormData() {
                         id="email"
                         name="email"
                     />
-                    {formik.touched.email && formik.errors.email && (
-                        <div className="text-red-500">
-                            {formik.errors.email}
-                        </div>
-                    )}
+                    <ErrorMessage name="email" />
                 </div>
 
                 <div>
@@ -62,11 +56,7 @@ function NewFormData() {
                         id="channel"
                         name="channel"
                     />
-                    {formik.touched.channel && formik.errors.channel && (
-                        <div className="text-red-500">
-                            {formik.errors.channel}
-                        </div>
-                    )}
+                    <ErrorMessage name="channel" />
                 </div>
 
                 <button
