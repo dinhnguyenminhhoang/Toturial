@@ -31,7 +31,6 @@ function FormData() {
         onSubmit: handleSubmit,
         validate,
     });
-    console.log(formik.touched);
     return (
         <div className="flex h-screen justify-center items-center">
             <form
@@ -48,7 +47,7 @@ function FormData() {
                         onChange={formik.handleChange}
                         value={formik.values.name}
                     />
-                    {formik.errors.name && (
+                    {formik.touched.name && formik.errors.name && (
                         <div className="text-red-500">{formik.errors.name}</div>
                     )}
                 </div>
@@ -63,7 +62,7 @@ function FormData() {
                         onChange={formik.handleChange}
                         value={formik.values.email}
                     />
-                    {formik.errors.email && (
+                    {formik.touched.email && formik.errors.email && (
                         <div className="text-red-500">
                             {formik.errors.email}
                         </div>
@@ -80,7 +79,7 @@ function FormData() {
                         onChange={formik.handleChange}
                         value={formik.values.channel}
                     />
-                    {formik.errors.channel && (
+                    {formik.touched.channel && formik.errors.channel && (
                         <div className="text-red-500">
                             {formik.errors.channel}
                         </div>
@@ -90,7 +89,6 @@ function FormData() {
                 <button
                     type="submit"
                     className="border-2 px-2 py-4 hover:bg-slate-300"
-                    disabled={Object.keys(formik.errors).length > 0}
                 >
                     Submit
                 </button>
