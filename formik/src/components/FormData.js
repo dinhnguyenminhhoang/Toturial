@@ -1,5 +1,6 @@
 import { useFormik } from "formik";
 import React from "react";
+import * as Yup from "yup";
 
 const initialValues = {
     name: "",
@@ -21,7 +22,11 @@ function FormData() {
         }
         return errors;
     };
-
+    const validationSchema = Yup.object({
+        name: Yup.string().required("required"),
+        email: Yup.string().email("invalid email formats").required("required"),
+        channel: Yup.string().required("required"),
+    });
     const handleSubmit = (values) => {
         console.log(values);
     };
@@ -29,7 +34,7 @@ function FormData() {
     const formik = useFormik({
         initialValues,
         onSubmit: handleSubmit,
-        validate,
+        validationSchema,
     });
     return (
         <div className="flex h-screen justify-center items-center">
