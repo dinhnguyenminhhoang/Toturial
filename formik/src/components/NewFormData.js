@@ -1,4 +1,4 @@
-import { Formik, useFormik } from "formik";
+import { Form, Formik, useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 
@@ -25,10 +25,7 @@ function NewFormData() {
             onSubmit={handleSubmit}
             className="flex h-screen justify-center items-center"
         >
-            <form
-                onSubmit={formik.handleSubmit}
-                className="flex flex-col gap-4 p-6 border-2 border-gray-900"
-            >
+            <Form className="flex flex-col gap-4 p-6 border-2 border-gray-900">
                 <div>
                     <label htmlFor="name">Name</label>
                     <input
@@ -81,7 +78,7 @@ function NewFormData() {
                 >
                     Submit
                 </button>
-            </form>
+            </Form>
         </Formik>
     );
 }
