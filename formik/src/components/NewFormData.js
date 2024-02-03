@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 
@@ -18,13 +18,13 @@ function NewFormData() {
         console.log(values);
     };
 
-    const formik = useFormik({
-        initialValues,
-        onSubmit: handleSubmit,
-        validationSchema,
-    });
     return (
-        <div className="flex h-screen justify-center items-center">
+        <Formik
+            initialValues={initialValues}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+            className="flex h-screen justify-center items-center"
+        >
             <form
                 onSubmit={formik.handleSubmit}
                 className="flex flex-col gap-4 p-6 border-2 border-gray-900"
@@ -82,7 +82,7 @@ function NewFormData() {
                     Submit
                 </button>
             </form>
-        </div>
+        </Formik>
     );
 }
 
