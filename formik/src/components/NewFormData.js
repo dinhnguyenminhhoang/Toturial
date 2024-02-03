@@ -1,4 +1,4 @@
-import { Form, Formik, useFormik } from "formik";
+import { Field, Form, Formik, useFormik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 
@@ -28,12 +28,11 @@ function NewFormData() {
             <Form className="flex flex-col gap-4 p-6 border-2 border-gray-900">
                 <div>
                     <label htmlFor="name">Name</label>
-                    <input
+                    <Field
                         className="border border-gray-700 rounded-md px-4 py-2"
                         type="text"
                         id="name"
                         name="name"
-                        {...formik.getFieldProps("name")}
                     />
                     {formik.touched.name && formik.errors.name && (
                         <div className="text-red-500">{formik.errors.name}</div>
@@ -42,12 +41,11 @@ function NewFormData() {
 
                 <div>
                     <label htmlFor="email">Email</label>
-                    <input
+                    <Field
                         className="border border-gray-700 rounded-md px-4 py-2"
                         type="email"
                         id="email"
                         name="email"
-                        {...formik.getFieldProps("email")}
                     />
                     {formik.touched.email && formik.errors.email && (
                         <div className="text-red-500">
@@ -58,12 +56,11 @@ function NewFormData() {
 
                 <div>
                     <label htmlFor="channel">Channel</label>
-                    <input
+                    <Field
                         className="border border-gray-700 rounded-md px-4 py-2"
                         type="text"
                         id="channel"
                         name="channel"
-                        {...formik.getFieldProps("channel")}
                     />
                     {formik.touched.channel && formik.errors.channel && (
                         <div className="text-red-500">
