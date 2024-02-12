@@ -1,0 +1,3 @@
+- git clone: clone project về
+- git checkout: chuyển các branch (-b:tạo)
+-git status: xem brach thay đổi
